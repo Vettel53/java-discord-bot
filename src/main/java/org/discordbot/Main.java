@@ -1,4 +1,4 @@
-package org.example;
+package org.discordbot;
 
 import events.BotListeners;
 import events.Commands;
@@ -49,7 +49,6 @@ public class Main {
                 .build().awaitReady();
 
         commands.setBot(bot);
-
 
     }
 }

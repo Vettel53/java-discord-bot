@@ -12,14 +12,14 @@ public class BotListeners extends ListenerAdapter {
         String messageSent;
         String messageAuthor;
 
-        if (!event.getAuthor().isBot()) {
-            messageSent = event.getMessage().getContentRaw();
-            messageAuthor = event.getAuthor().getAsMention();
-            event.getChannel().sendMessage("He said: " + messageSent).queue();
-            event.getChannel().sendMessage("Author: " + messageAuthor).queue();
-        }
-
-        System.out.println("A message has been sent.");
+//        if (!event.getAuthor().isBot()) {
+//            messageSent = event.getMessage().getContentRaw();
+//            messageAuthor = event.getAuthor().getAsMention();
+//            event.getChannel().sendMessage("He said: " + messageSent).queue();
+//            event.getChannel().sendMessage("Author: " + messageAuthor).queue();
+//        }
+//
+//        System.out.println("stfu kudasai"); TODO:
     }
 
     public void onChannelDelete (ChannelDeleteEvent event) {
