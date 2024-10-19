@@ -7,6 +7,12 @@ public class FortniteStatsParser {
 
     private static String jsonFortniteStats;
 
+    /** TODO: proper commenting, /** then enter
+     *
+     * @param jsonDataToParse
+     * @return
+     */
+
     public static PlayerStats parsePlayerStats(String jsonDataToParse) {
         jsonFortniteStats = jsonDataToParse;
         JSONObject jsonObject = new JSONObject(jsonFortniteStats);
@@ -31,6 +37,7 @@ public class FortniteStatsParser {
         int minutesPlayed = overallStatsObject.getInt("minutesPlayed");
         double killDeathRatio = overallStatsObject.getDouble("kd");
         String lastUpdatedData = overallStatsObject.getString("lastModified");
+
 
         System.out.println("Kills: " + kills);
         System.out.println("wins: " + wins);

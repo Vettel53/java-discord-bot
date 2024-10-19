@@ -42,7 +42,7 @@ public class Main {
 
         // Build JDA instance after valid token is processed.
         JDA bot =  JDABuilder.createDefault(data)
-                .setActivity(Activity.playing("Rocket League"))
+                .setActivity(Activity.streaming("Dying of Thirst", "https://www.youtube.com/watch?v=9-XbXBq8cl8"))
                 .addEventListeners(new BotListeners())
                 .addEventListeners(commands)
                 .enableIntents(GatewayIntent.MESSAGE_CONTENT)

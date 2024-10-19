@@ -1,17 +1,12 @@
 package api;
 
 import models.PlayerStats;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.Call;
-import okhttp3.Callback;
+import okhttp3.*;
+
 import java.io.IOException;
-import static api.FortniteStatsParser.parsePlayerStats;
 
 public class FortniteAPI {
-    // TODO: implement string concatenation to allow multiple parameters for API_URL
-    private static String API_URL_TEMPLATE = "https://fortnite-api.com/v2/stats/br/v2?name=%s";
+    private static String API_URL_TEMPLATE = "https://fortnite-api.com/v2/stats/br/v2?name=";
     private static final OkHttpClient client = new OkHttpClient();
 
     public static void main(String[] args) {
@@ -25,16 +20,24 @@ public class FortniteAPI {
         void onError(String errorMessage);
     }
 
-    public static void fetchPlayerStats(String playerName, PlayerStatsCallback callback) {
+    public static void fetchPlayerStats(String StringUserName, String StringPlatform, String StringTimeWindow, String StringInput, PlayerStatsCallback callback) {
 
         // Explanation of how the API url works
         // https://i.ibb.co/1GyTXH6/url-structure-1.webp
 
         // To construction URL we must add more variables and use the & to seperate the parameters
         // EXAMPLE: String API_URL = String.format(API_URL_TEMPLATE, playerName + "&timeWindow=season");
-        String API_URL = String.format(API_URL_TEMPLATE, playerName);
+        String queryParams = String.format(
+                "&accountType=%s&timeWindow=%s&image=%s",
+                StringPlatform,
+                StringTimeWindow,
+                StringInput
+        );
 
-        System.out.println(API_URL);
+        String API_URL = String.format("%s%s", API_URL_TEMPLATE, StringUserName + queryParams);
+        // EXAMPLE URL: https://fortnite-api.com/v2/stats/br/v2?name=AuroFN&accountType=epic&timeWindow=lifetime&image=none
+
+        System.out.println(API_URL); // Debugging purposes
 
         Request request = new Request.Builder()
                 .url(API_URL)
@@ -58,16 +61,19 @@ public class FortniteAPI {
                     callback.onSuccess(playerStats);
                 } else {
                     // Reference interface above
-                    // On failure, the onError method is called containing the String below
-                    callback.onError("Request failed: " + response.code());
+                    // On failure, the onError method is called containing the String(s) below
+                    if (response.code() == 400) {
+                        callback.onError("Invalid or missing parameter(s)...");
+                    } else if (response.code() == 403) {
+                        callback.onError("This players account is private...");
+                    } else if (response.code() == 404) {
+                        callback.onError("Account does not exist or has no stats...");
+                    }
                 }
+
             }
         });
 
     }
-
-//    public static String buildAPIURL(String playerName, String accountType, String timeWindow, String image) {
-//        return "";
-//    } TODO: Implement proper building API URL method.
 
 }

@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -34,22 +35,8 @@ public class Commands extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
-        Guild guild;
-        guild = bot.getGuildById(1293823251004264448L); // TODO: Replace this with proper guild
 
-        // Command names must be lowercase and must be one word (no spaces)
-        if (guild != null) {
-            guild.upsertCommand("test", "testing hard").queue();
-            guild.upsertCommand("rank", "Search your Rocket League rank!")
-                    //.addOption(OptionType.STRING, "platform", "Account Platform", true)
-                    .addOption(OptionType.STRING, "name", "Account Name", true)
-                    .addOption(OptionType.STRING, "accounttype", "Account Platform", false)
-                    .addOption(OptionType.STRING, "timewindow", "Season or Lifetime Stats", false)
-                    .addOption(OptionType.STRING, "image", "Account Name", false)
-                    .queue();
-        } else {
-            System.out.println("Guild not found.");
-        }
+        addCommands();
 
         if (event.getName().equals("test")) {
 
@@ -61,41 +48,51 @@ public class Commands extends ListenerAdapter {
         } else if (event.getName().equals("rank")) {
             // Two sets of variables
             // OptionMapping -> Stores the OptionMapping objects for each option of the command
-            // String -> Stores the value of the OptionMapping objects (ex: userPlatform or userName) in the event
-            String name;
-            OptionMapping userName;
+            // String -> Stores the String value of the OptionMapping objects (ex: userPlatform or userName) in the event
+            String StringUserName, StringPlatformType, StringTimeWindow, StringInput;
+            OptionMapping userName, accountPlatform, timeWindow, image;
 
-            // Get options
+            // Get options (Stored as OptionMapping)
             userName = event.getOption("name");
+            accountPlatform = event.getOption("accountplatform");
+            timeWindow = event.getOption("timewindow");
+            image = event.getOption("image"); // image = device input
 
             // Check if options are null, highly unlikely, but correct to check.
             if (userName == null) {
-                event.reply("No option was found... Returning!").queue();
+                event.reply("Sorry, we encountered an error. Please try again...").queue();
                 return;
             }
 
-            // get OptionMappings userName as a proper string
-            name = userName.getAsString();
+            // Get OptionMappings userName as a proper Strings and handle if they are null
+            // If they are null, we will use the default values for the parameters as specified in the fortnite-api
+            // https://dash.fortnite-api.com/endpoints/stats
+            StringPlatformType = (accountPlatform != null) ? accountPlatform.getAsString() : "epic";
+            StringTimeWindow = (timeWindow != null) ? timeWindow.getAsString() : "lifetime";
+            StringInput = (image != null) ? image.getAsString() : "none";
 
-            fetchPlayerStats(name, new FortniteAPI.PlayerStatsCallback() {
+            StringUserName = userName.getAsString();
+            // We include all String conversions of the OptionData
+            // This will allow us to build the fortnite-api call URL
+            fetchPlayerStats(StringUserName, StringPlatformType, StringTimeWindow, StringInput, new FortniteAPI.PlayerStatsCallback() {
                 public void onSuccess(PlayerStats playerStats) {
                     // Call formatStatsResponse to properly format the playerStats
                     String response = formatStatsResponse(playerStats);
 
                     // Call embedStatsResponse to properly embed the formatted response into Discord
-                    embedStatsResponse(response, name, event);
+                    embedStatsResponse(response, StringUserName, event);
                 }
 
                 public void onError(String errorMessage) {
                     // Handle the error, e.g., notify the user
-                    event.reply("Error fetching player stats: " + errorMessage).queue();
+                    event.reply("Error fetching player stats... " + errorMessage).queue();
                 }
             });
         }
     }
 
     public String formatStatsResponse(PlayerStats playerStats) {
-        // DOING: Implement this method to format the unformatted response into a Discord-friendly format
+        // TODO: Maybe implement more stats? Ask users for opinions
 
         String formattedResponse = "**Player Name: **" + playerStats.getPlayerName() + "\n\n"
                 + "**Battle Pass Level: **" + playerStats.getBattlePassLevel() + "\n"
@@ -109,8 +106,8 @@ public class Commands extends ListenerAdapter {
     }
 
     public void embedStatsResponse(String response, String name, SlashCommandInteractionEvent event) {
-        // Send the formatted response back to Discord
-        // TODO: Replace iconURL with proper forever URL
+        // Send the formatted response back to Discord as an embed
+
         embed.setAuthor("Brownseal", botURL, "https://i.ibb.co/pjmHk7d/aas-thumbnail-fluffy-2048px-2048x-1.jpg" );
         embed.setTitle("Fortnite Stats for " + name);
         embed.setDescription(response);
@@ -121,4 +118,52 @@ public class Commands extends ListenerAdapter {
         event.replyEmbeds(embed.build()).queue();
     }
 
+    public void addCommands() {
+        Guild testingGuild;
+        // This guild is my personal testing server, eventually global commands will be rolled out
+        testingGuild = bot.getGuildById(1293823251004264448L);
+
+        // Command names must be lowercase and must be one word (no spaces)
+        if (testingGuild != null) {
+
+            testingGuild.upsertCommand("test", "testing commands")
+                    .queue();
+            testingGuild.upsertCommand("rank", "Search your Rocket League rank!")
+                    // addOption names must be lowercase and one word
+                    .addOption(OptionType.STRING, "name", "Account Name", true)
+
+                    // Use addOptions instead of addOption for predetermined options
+                    .addOptions(getPlatformOption())
+                    .addOptions(getTimeWindowOption())
+                    .addOptions(getImageOption())
+
+                    .queue();
+        } else {
+            System.out.println("Guild/Server not found.");
+        }
+    }
+
+    // These OptionData methods allow pre-determined options to be shown to the user for some of the commands
+    // This is primarily done as the fortnite-api only accepts certain parameters
+    private OptionData getPlatformOption() {
+        return new OptionData(OptionType.STRING, "accountplatform", "Choose your platform", false)
+                .addChoice("epic games", "epic")
+                .addChoice("psn", "psn")
+                .addChoice("xbox", "xbl");
+    }
+
+    private OptionData getTimeWindowOption() {
+        return new OptionData(OptionType.STRING, "timewindow", "Seasonal / Lifetime", false)
+                .addChoice("seasonal", "season")
+                .addChoice("lifetime", "lifetime");
+    }
+
+    private OptionData getImageOption() {
+        return new OptionData(OptionType.STRING, "image", "Device Input", false)
+                .addChoice("all", "all")
+                .addChoice("keyboardMouse", "keyboardMouse")
+                .addChoice("touchscreen", "touch")
+                .addChoice("controller", "gamepad")
+                .addChoice("none", "none");
+    }
 }
