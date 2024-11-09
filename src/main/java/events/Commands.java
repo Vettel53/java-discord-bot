@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,6 +17,7 @@ import java.awt.*;
 import java.time.Instant;
 
 import static api.FortniteAPI.fetchPlayerStats;
+import static api.RandomDogAPI.fetchRandomDog;
 
 public class Commands extends ListenerAdapter {
     // Regarding Commands - >
@@ -24,6 +26,7 @@ public class Commands extends ListenerAdapter {
     // Guild Commands - They can only be used in a specific guild
     private JDA bot = null;
     private final String botURL = "https://github.com/Vettel53/java-discord-bot";
+    private final String botImageURL = "https://i.ibb.co/pjmHk7d/aas-thumbnail-fluffy-2048px-2048x-1.jpg";
     EmbedBuilder embed = new EmbedBuilder();
     public Commands() {
 
@@ -38,57 +41,88 @@ public class Commands extends ListenerAdapter {
 
         addCommands();
 
-        if (event.getName().equals("test")) {
+        switch (event.getName()) {
+            case "test":
+                handleTestCommand(event);
+                break;
+            case "rank":
+                handleRankCommand(event);
+                break;
+            case "dog":
+                handleDogCommand(event);
+                break;
+        }
+    }
 
-            embed.setTitle("Test Command");
-            embed.setDescription("This is a test command.");
-            embed.setColor(new Color(255,255,255));
-            embed.setFooter("Test");
-            event.replyEmbeds(embed.build()).queue();
-        } else if (event.getName().equals("rank")) {
-            // Two sets of variables
-            // OptionMapping -> Stores the OptionMapping objects for each option of the command
-            // String -> Stores the String value of the OptionMapping objects (ex: userPlatform or userName) in the event
-            String StringUserName, StringPlatformType, StringTimeWindow, StringInput;
-            OptionMapping userName, accountPlatform, timeWindow, image;
+    public void handleTestCommand(SlashCommandInteraction event) {
+        embed.setTitle("Test Command");
+        embed.setDescription("This is a test command.");
+        embed.setColor(new Color(255,255,255));
+        embed.setFooter("Test");
+        event.replyEmbeds(embed.build()).queue();
+    }
 
-            // Get options (Stored as OptionMapping)
-            userName = event.getOption("name");
-            accountPlatform = event.getOption("accountplatform");
-            timeWindow = event.getOption("timewindow");
-            image = event.getOption("image"); // image = device input
+    public void handleRankCommand(SlashCommandInteraction event) {
+        // TODO: Document the reason for using discordUserName instead
+        OptionMapping discordUserName = event.getOption("name");
+        // Two sets of variables
+        // OptionMapping -> Stores the OptionMapping objects for each option of the command
+        // String -> Stores the String value of the OptionMapping objects (ex: userPlatform or userName) in the event
+        String StringUserName, StringPlatformType, StringTimeWindow, StringInput;
+        OptionMapping userName;
 
-            // Check if options are null, highly unlikely, but correct to check.
-            if (userName == null) {
-                event.reply("Sorry, we encountered an error. Please try again...").queue();
-                return;
+        // Get options (Stored as OptionMapping)
+        userName = event.getOption("name");
+        // Check if options are null, highly unlikely, but correct to check.
+        if (userName == null) {
+            event.reply("Sorry, we encountered an error. Please try again...").queue();
+            return;
+        }
+
+        // Get OptionMappings userName as a proper Strings and handle if they are null
+        // If they are null, we will use the default values for the parameters as specified in the fortnite-api
+        // https://dash.fortnite-api.com/endpoints/stats
+        StringPlatformType = getOptionMappingAsString(event, "accountplatform", "epic");
+        StringTimeWindow = getOptionMappingAsString(event, "timewindow", "lifetime");
+        StringInput = getOptionMappingAsString(event, "image", "none");
+        StringUserName = userName.getAsString();
+
+        fetchPlayerStats(StringUserName, StringPlatformType, StringTimeWindow, StringInput, new FortniteAPI.PlayerStatsCallback() {
+            public void onSuccess(PlayerStats playerStats) {
+                // Call formatStatsResponse to properly format the playerStats
+                String response = formatStatsResponse(playerStats);
+
+                // Call embedStatsResponse to properly embed the formatted response into Discord
+                embedStatsResponse(response, StringUserName, event);
             }
 
-            // Get OptionMappings userName as a proper Strings and handle if they are null
-            // If they are null, we will use the default values for the parameters as specified in the fortnite-api
-            // https://dash.fortnite-api.com/endpoints/stats
-            StringPlatformType = (accountPlatform != null) ? accountPlatform.getAsString() : "epic";
-            StringTimeWindow = (timeWindow != null) ? timeWindow.getAsString() : "lifetime";
-            StringInput = (image != null) ? image.getAsString() : "none";
+            public void onError(String errorMessage) {
+                // Handle the error, e.g., notify the user
+                event.reply("Error fetching player stats... " + errorMessage).queue();
+            }
+        });
+    }
 
-            StringUserName = userName.getAsString();
-            // We include all String conversions of the OptionData
-            // This will allow us to build the fortnite-api call URL
-            fetchPlayerStats(StringUserName, StringPlatformType, StringTimeWindow, StringInput, new FortniteAPI.PlayerStatsCallback() {
-                public void onSuccess(PlayerStats playerStats) {
-                    // Call formatStatsResponse to properly format the playerStats
-                    String response = formatStatsResponse(playerStats);
+    public void handleDogCommand(SlashCommandInteraction event) {
+        String randomDogURL = fetchRandomDog();
 
-                    // Call embedStatsResponse to properly embed the formatted response into Discord
-                    embedStatsResponse(response, StringUserName, event);
-                }
-
-                public void onError(String errorMessage) {
-                    // Handle the error, e.g., notify the user
-                    event.reply("Error fetching player stats... " + errorMessage).queue();
-                }
-            });
+        if (randomDogURL == null) {
+            event.reply("Error fetching random dog image...")
+                    .queue();
+        } else {
+            embed.setAuthor("Brownseal", botURL, botImageURL);
+            embed.setTitle("Hello world, this is dog!");
+            embed.setImage(randomDogURL);
+            embed.setColor(new Color(56, 52, 250));
+            embed.setFooter("Courtesy of random.dog");
+            embed.setTimestamp(Instant.now());
+            event.replyEmbeds(embed.build()).queue();
         }
+    }
+
+    public String getOptionMappingAsString(SlashCommandInteraction event, String optionName, String defaultValue) {
+        OptionMapping optionToConvert = event.getOption(optionName);
+        return (optionToConvert!= null) ? optionToConvert.getAsString() : defaultValue;
     }
 
     public String formatStatsResponse(PlayerStats playerStats) {
@@ -105,7 +139,7 @@ public class Commands extends ListenerAdapter {
         return formattedResponse;
     }
 
-    public void embedStatsResponse(String response, String name, SlashCommandInteractionEvent event) {
+    public void embedStatsResponse(String response, String name, SlashCommandInteraction event) {
         // Send the formatted response back to Discord as an embed
 
         embed.setAuthor("Brownseal", botURL, "https://i.ibb.co/pjmHk7d/aas-thumbnail-fluffy-2048px-2048x-1.jpg" );

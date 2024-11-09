@@ -7,12 +7,13 @@ public class FortniteStatsParser {
 
     private static String jsonFortniteStats;
 
-    /** TODO: proper commenting, /** then enter
+     /**
+     * Parses a JSON string containing Fortnite player statistics and returns a PlayerStats object.
      *
-     * @param jsonDataToParse
-     * @return
+     * @param jsonDataToParse A JSON string containing Fortnite player statistics.
+     *                        The JSON string should be in the format returned by the Fortnite API.
+     * @return A PlayerStats object containing the correctly parsed statistics.
      */
-
     public static PlayerStats parsePlayerStats(String jsonDataToParse) {
         jsonFortniteStats = jsonDataToParse;
         JSONObject jsonObject = new JSONObject(jsonFortniteStats);
@@ -38,7 +39,6 @@ public class FortniteStatsParser {
         double killDeathRatio = overallStatsObject.getDouble("kd");
         String lastUpdatedData = overallStatsObject.getString("lastModified");
 
-
         System.out.println("Kills: " + kills);
         System.out.println("wins: " + wins);
         System.out.println("minutesPlayed: " + minutesPlayed);
@@ -51,7 +51,6 @@ public class FortniteStatsParser {
         System.out.println("Battle Pass Level: " + battlePassLevel);
 
         // Extract relevant data from JSON and return relevant data
-
 
         return new PlayerStats(playerName, battlePassLevel, kills, wins, minutesPlayed, killDeathRatio, lastUpdatedData);
     }

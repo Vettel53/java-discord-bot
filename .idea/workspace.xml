@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b69fb185-cfee-43fc-bdb2-c8cd608b9624" name="Changes" comment="-- Changing callback name in FetchPlayerStats&#10;-- TODO: Clean up interface documentation&#10;-- TODO: Change callback variable name">
+      <change afterPath="$PROJECT_DIR$/src/main/java/api/RandomDogAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/api/FortniteAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/api/FortniteAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/api/FortniteStatsParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/api/FortniteStatsParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/events/BotListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/events/BotListeners.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/events/Commands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/events/Commands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/PlayerStats.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/PlayerStats.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2nHiCxACE1llrZyp7py32jDOiwj" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.FortniteAPI.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Javier/Intelij Projects/java-discord-bot",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.31845596",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Javier\Intelij Projects\java-discord-bot\src\main\images" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="FortniteAPI" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="api.FortniteAPI" />
+      <module name="java-discord-bot" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="api.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.discordbot.Main" />
+      <module name="java-discord-bot" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.discordbot.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-22-openjdk-22-4caba194b151-f504ca98" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b69fb185-cfee-43fc-bdb2-c8cd608b9624" name="Changes" comment="" />
+      <created>1728636279162</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1728636279162</updated>
+      <workItem from="1728636280464" duration="503000" />
+      <workItem from="1728636794044" duration="2628000" />
+      <workItem from="1728640522160" duration="206000" />
+      <workItem from="1728718112901" duration="9060000" />
+      <workItem from="1728785613836" duration="13399000" />
+      <workItem from="1728868615741" duration="1143000" />
+      <workItem from="1728880295188" duration="8613000" />
+      <workItem from="1728960319072" duration="20238000" />
+      <workItem from="1729153277572" duration="3684000" />
+      <workItem from="1729277208822" duration="12947000" />
+      <workItem from="1729377838129" duration="4147000" />
+      <workItem from="1729441165750" duration="944000" />
+      <workItem from="1729491889494" duration="3000" />
+      <workItem from="1729587395775" duration="53000" />
+      <workItem from="1730158306015" duration="2000" />
+      <workItem from="1730623252739" duration="2640000" />
+      <workItem from="1730625901271" duration="2619000" />
+      <workItem from="1730925440859" duration="600000" />
+      <workItem from="1730940677904" duration="6597000" />
+      <workItem from="1731017223435" duration="600000" />
+      <workItem from="1731099790289" duration="1408000" />
+      <workItem from="1731128817340" duration="1117000" />
+    </task>
+    <task id="LOCAL-00001" summary="AutoCompleteBot.java -&gt; WIP for autocompleting parameters in slash commands&#10;&#10;BotListeners.java -&gt; Example of bot listeners using JDA api&#10;&#10;Commands.java -&gt; Structure for /rank command using rocket league API&#10;&#10;RocketLeagueAPI -&gt; Empty right now, but will house rocket league API calls&#10;&#10;Main -&gt; Quick update to pass JDA bot instance to other classes (EX: Commands.java)">
+      <option name="closed" value="true" />
+      <created>1728796232036</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1728796232036</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Refactored code to handle JSON parsing and PlayerStats.java model&#10;&#10;- Switched from Rocket League API to Fortnite API (RL API not public)&#10;- Implemented parsing logic (org.json) in FortniteStatsParser.java to handle the API responses&#10;- Added callback interface to handle async API calls and data (Still attempting to full grasp this idea)&#10;- Improved JSON handling for player stats data using multiple JSONObjects and attempting to be more modular.">
+      <option name="closed" value="true" />
+      <created>1728981516992</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1728981516992</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Handle API call errors, improve code readability, and update bot functionality&#10;&#10;- Added handling for specific API call error codes&#10;- Improved code clarity with additional comments&#10;- Implemented ternary operators to check for null user options&#10;- Renamed variables for better readability and context&#10;- Updated bot activity to reflect &quot;current&quot; status (Made up)">
+      <option name="closed" value="true" />
+      <created>1729317588790</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1729317588790</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="AutoCompleteBot.java -&gt; WIP for autocompleting parameters in slash commands&#10;&#10;BotListeners.java -&gt; Example of bot listeners using JDA api&#10;&#10;Commands.java -&gt; Structure for /rank command using rocket league API&#10;&#10;RocketLeagueAPI -&gt; Empty right now, but will house rocket league API calls&#10;&#10;Main -&gt; Quick update to pass JDA bot instance to other classes (EX: Commands.java)" />
+    <MESSAGE value="Refactored code to handle JSON parsing and PlayerStats.java model&#10;&#10;- Switched from Rocket League API to Fortnite API (RL API not public)&#10;- Implemented parsing logic (org.json) in FortniteStatsParser.java to handle the API responses&#10;- Added callback interface to handle async API calls and data (Still attempting to full grasp this idea)&#10;- Improved JSON handling for player stats data using multiple JSONObjects and attempting to be more modular." />
+    <MESSAGE value="Handle API call errors, improve code readability, and update bot functionality&#10;&#10;- Added handling for specific API call error codes&#10;- Improved code clarity with additional comments&#10;- Implemented ternary operators to check for null user options&#10;- Renamed variables for better readability and context&#10;- Updated bot activity to reflect &quot;current&quot; status (Made up)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Handle API call errors, improve code readability, and update bot functionality&#10;&#10;- Added handling for specific API call error codes&#10;- Improved code clarity with additional comments&#10;- Implemented ternary operators to check for null user options&#10;- Renamed variables for better readability and context&#10;- Updated bot activity to reflect &quot;current&quot; status (Made up)" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+  </component>
+</project>

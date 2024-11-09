@@ -9,6 +9,17 @@ public class PlayerStats {
     private double killDeathRatio;
     private String lastUpdatedData;
 
+     /**
+     * Constructs a new PlayerStats object with the provided parameters.
+     *
+     * @param playerName The name of the player.
+     * @param battlePassLevel The battle pass level of the player.
+     * @param kills The number of kills the player has made.
+     * @param wins The number of wins the player has achieved.
+     * @param minutesPlayed The total minutes the player has played.
+     * @param killDeathRatio The calculated kill-death ratio of the player.
+     * @param lastUpdatedData The date and time when the player's stats were last updated.
+     */
     public PlayerStats(String playerName, int battlePassLevel, int kills, int wins, int minutesPlayed, double killDeathRatio, String lastUpdatedData) {
         setPlayerName(playerName);
         setBattlePassLevel(battlePassLevel);

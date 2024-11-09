@@ -7,28 +7,27 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class BotListeners extends ListenerAdapter {
 
-    @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
-        String messageSent;
-        String messageAuthor;
-
-//        if (!event.getAuthor().isBot()) {
-//            messageSent = event.getMessage().getContentRaw();
-//            messageAuthor = event.getAuthor().getAsMention();
-//            event.getChannel().sendMessage("He said: " + messageSent).queue();
-//            event.getChannel().sendMessage("Author: " + messageAuthor).queue();
-//        }
+////    @Override
+////    public void onMessageReceived(MessageReceivedEvent event) {
+////        String messageSent;
+////        String messageAuthor;
+////
+//////        if (!event.getAuthor().isBot()) {
+//////            messageSent = event.getMessage().getContentRaw();
+//////            messageAuthor = event.getAuthor().getAsMention();
+//////            event.getChannel().sendMessage("He said: " + messageSent).queue();
+//////            event.getChannel().sendMessage("Author: " + messageAuthor).queue();
+//////        }
+//////
+////    }
 //
-//        System.out.println("stfu kudasai"); TODO:
-    }
-
-    public void onChannelDelete (ChannelDeleteEvent event) {
-        String channelName = event.getChannel().getName();
-
-        TextChannel general = event.getChannel().getJDA().getTextChannelById(1293823254167031861L);
-
-        if (general != null) {
-            general.sendMessage("Channel '" + channelName + "' has been deleted.").queue();
-        }
-    }
+//    public void onChannelDelete (ChannelDeleteEvent event) {
+//        String channelName = event.getChannel().getName();
+//
+//        TextChannel general = event.getChannel().getJDA().getTextChannelById(1293823254167031861L);
+//
+//        if (general != null) {
+//            general.sendMessage("Channel '" + channelName + "' has been deleted.").queue();
+//        }
+//    }
 }

@@ -25,7 +25,7 @@ public class FortniteAPI {
         // Explanation of how the API url works
         // https://i.ibb.co/1GyTXH6/url-structure-1.webp
 
-        // To construction URL we must add more variables and use the & to seperate the parameters
+        // To construct URL we must add more variables and use the & to seperate the parameters
         // EXAMPLE: String API_URL = String.format(API_URL_TEMPLATE, playerName + "&timeWindow=season");
         String queryParams = String.format(
                 "&accountType=%s&timeWindow=%s&image=%s",
