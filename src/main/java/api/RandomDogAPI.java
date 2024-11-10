@@ -21,6 +21,7 @@ public class RandomDogAPI {
 
                 System.out.println("Random Dog URL: " + dogImageURL);
                 if (dogImageURL.endsWith(".mp4") || dogImageURL.endsWith(".webm")) { // Discord embed messages don't support MP4/webm files
+                    System.out.println("Dog API called  + dogImageURL");
                     return fetchRandomDog(); // Recursively generate another random dog url
                 } else {
                     return dogImageURL;

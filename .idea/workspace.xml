@@ -5,12 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b69fb185-cfee-43fc-bdb2-c8cd608b9624" name="Changes" comment="-- Changing callback name in FetchPlayerStats&#10;-- TODO: Clean up interface documentation&#10;-- TODO: Change callback variable name">
-      <change afterPath="$PROJECT_DIR$/src/main/java/api/RandomDogAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/api/FortniteAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/api/FortniteAPI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/api/FortniteStatsParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/api/FortniteStatsParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/events/BotListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/events/BotListeners.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/api/RandomDogAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/api/RandomDogAPI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/events/Commands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/events/Commands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/PlayerStats.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/PlayerStats.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +48,7 @@
     "Repository.Attach.Sources": "false",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Javier/Intelij Projects/java-discord-bot",
     "node.js.detected.package.eslint": "true",
@@ -131,7 +132,9 @@
       <workItem from="1730940677904" duration="6597000" />
       <workItem from="1731017223435" duration="600000" />
       <workItem from="1731099790289" duration="1408000" />
-      <workItem from="1731128817340" duration="1117000" />
+      <workItem from="1731128817340" duration="5101000" />
+      <workItem from="1731208268830" duration="1618000" />
+      <workItem from="1731210091122" duration="1460000" />
     </task>
     <task id="LOCAL-00001" summary="AutoCompleteBot.java -&gt; WIP for autocompleting parameters in slash commands&#10;&#10;BotListeners.java -&gt; Example of bot listeners using JDA api&#10;&#10;Commands.java -&gt; Structure for /rank command using rocket league API&#10;&#10;RocketLeagueAPI -&gt; Empty right now, but will house rocket league API calls&#10;&#10;Main -&gt; Quick update to pass JDA bot instance to other classes (EX: Commands.java)">
       <option name="closed" value="true" />

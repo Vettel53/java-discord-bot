@@ -20,7 +20,7 @@ public class FortniteAPI {
         void onError(String errorMessage);
     }
 
-    public static void fetchPlayerStats(String StringUserName, String StringPlatform, String StringTimeWindow, String StringInput, PlayerStatsCallback callback) {
+    public static void fetchPlayerStats(String StringUserName, String StringPlaylist, String StringPlatform, String StringTimeWindow, String StringInput, PlayerStatsCallback callback) {
 
         // Explanation of how the API url works
         // https://i.ibb.co/1GyTXH6/url-structure-1.webp
@@ -53,8 +53,13 @@ public class FortniteAPI {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
+
+                    // put switch statement here for picking overall, solo, or squad
+
                     String responseData = response.body().string();
-                    PlayerStats playerStats = FortniteStatsParser.parsePlayerStats(responseData);
+                    PlayerStats playerStats = FortniteStatsParser.parsePlayerStats(responseData, StringPlaylist);
+                    // This is where we can edit to get solo, duo, squads
+
 
                     // Reference interface above
                     // On success, the onSuccess method is called containing playerStats

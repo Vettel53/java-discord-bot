@@ -68,7 +68,7 @@ public class Commands extends ListenerAdapter {
         // Two sets of variables
         // OptionMapping -> Stores the OptionMapping objects for each option of the command
         // String -> Stores the String value of the OptionMapping objects (ex: userPlatform or userName) in the event
-        String StringUserName, StringPlatformType, StringTimeWindow, StringInput;
+        String StringUserName, StringPlaylist, StringPlatformType, StringTimeWindow, StringInput;
         OptionMapping userName;
 
         // Get options (Stored as OptionMapping)
@@ -82,12 +82,13 @@ public class Commands extends ListenerAdapter {
         // Get OptionMappings userName as a proper Strings and handle if they are null
         // If they are null, we will use the default values for the parameters as specified in the fortnite-api
         // https://dash.fortnite-api.com/endpoints/stats
+        StringPlaylist = getOptionMappingAsString(event, "playlist", "overall");
         StringPlatformType = getOptionMappingAsString(event, "accountplatform", "epic");
         StringTimeWindow = getOptionMappingAsString(event, "timewindow", "lifetime");
         StringInput = getOptionMappingAsString(event, "image", "none");
         StringUserName = userName.getAsString();
 
-        fetchPlayerStats(StringUserName, StringPlatformType, StringTimeWindow, StringInput, new FortniteAPI.PlayerStatsCallback() {
+        fetchPlayerStats(StringUserName, StringPlaylist, StringPlatformType, StringTimeWindow, StringInput, new FortniteAPI.PlayerStatsCallback() {
             public void onSuccess(PlayerStats playerStats) {
                 // Call formatStatsResponse to properly format the playerStats
                 String response = formatStatsResponse(playerStats);
@@ -117,12 +118,17 @@ public class Commands extends ListenerAdapter {
             embed.setFooter("Courtesy of random.dog");
             embed.setTimestamp(Instant.now());
             event.replyEmbeds(embed.build()).queue();
+            embed.clear();
         }
     }
 
     public String getOptionMappingAsString(SlashCommandInteraction event, String optionName, String defaultValue) {
         OptionMapping optionToConvert = event.getOption(optionName);
-        return (optionToConvert!= null) ? optionToConvert.getAsString() : defaultValue;
+        if (optionToConvert != null) {
+            return optionToConvert.getAsString();
+        } else {
+            return defaultValue;
+        }
     }
 
     public String formatStatsResponse(PlayerStats playerStats) {
@@ -150,6 +156,7 @@ public class Commands extends ListenerAdapter {
         embed.setFooter("Vettel53");
         embed.setTimestamp(Instant.now());
         event.replyEmbeds(embed.build()).queue();
+        embed.clear();
     }
 
     public void addCommands() {
@@ -162,11 +169,14 @@ public class Commands extends ListenerAdapter {
 
             testingGuild.upsertCommand("test", "testing commands")
                     .queue();
+            testingGuild.upsertCommand("dog", "Random dog photo!")
+                    .queue();
             testingGuild.upsertCommand("rank", "Search your Rocket League rank!")
                     // addOption names must be lowercase and one word
                     .addOption(OptionType.STRING, "name", "Account Name", true)
 
                     // Use addOptions instead of addOption for predetermined options
+                    .addOptions(getPlaylistOption())
                     .addOptions(getPlatformOption())
                     .addOptions(getTimeWindowOption())
                     .addOptions(getImageOption())
@@ -179,6 +189,15 @@ public class Commands extends ListenerAdapter {
 
     // These OptionData methods allow pre-determined options to be shown to the user for some of the commands
     // This is primarily done as the fortnite-api only accepts certain parameters
+    private OptionData getPlaylistOption() {
+        return new OptionData(OptionType.STRING, "playlist", "Choose which playlist", false)
+                .addChoice("overall", "overall")
+                .addChoice("solo", "solo")
+                .addChoice("duo", "duo")
+                .addChoice("squad", "squad")
+                .addChoice("limited-time-mode", "ltm");
+    }
+
     private OptionData getPlatformOption() {
         return new OptionData(OptionType.STRING, "accountplatform", "Choose your platform", false)
                 .addChoice("epic games", "epic")
