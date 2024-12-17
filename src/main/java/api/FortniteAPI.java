@@ -9,9 +9,9 @@ public class FortniteAPI {
     private static String API_URL_TEMPLATE = "https://fortnite-api.com/v2/stats/br/v2?name=";
     private static final OkHttpClient client = new OkHttpClient();
 
-    public static void main(String[] args) {
-        //fetchPlayerStats();
-    }
+//    public static void main(String[] args) {
+//        //fetchPlayerStats();
+//    }
 
     public interface PlayerStatsCallback {
         // Callback interface

@@ -18,6 +18,7 @@ import java.time.Instant;
 
 import static api.FortniteAPI.fetchPlayerStats;
 import static api.RandomDogAPI.fetchRandomDog;
+import services.PlayerCategorizerService;
 
 public class Commands extends ListenerAdapter {
     // Regarding Commands - >
@@ -133,8 +134,9 @@ public class Commands extends ListenerAdapter {
 
     public String formatStatsResponse(PlayerStats playerStats) {
         // TODO: Maybe implement more stats? Ask users for opinions
+        String playerCategory = PlayerCategorizerService.categorizeKillDeath(playerStats);
 
-        String formattedResponse = "**Player Name: **" + playerStats.getPlayerName() + "\n\n"
+        String formattedResponse = "**Player Class: **" + playerCategory + "\n\n"
                 + "**Battle Pass Level: **" + playerStats.getBattlePassLevel() + "\n"
                 + "**Kills: **" + playerStats.getKills() + "\n"
                 + "**Wins: **" + playerStats.getWins() + "\n"
