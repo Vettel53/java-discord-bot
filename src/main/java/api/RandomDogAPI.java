@@ -16,12 +16,12 @@ public class RandomDogAPI {
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
                 String responseBody = response.body().string();
-                JSONObject jsonObject = new JSONObject(responseBody);
-                String dogImageURL = jsonObject.getString("url");
+                JSONObject json = new JSONObject(responseBody);
+                String dogImageURL = json.getString("url");
 
                 System.out.println("Random Dog URL: " + dogImageURL);
                 if (dogImageURL.endsWith(".mp4") || dogImageURL.endsWith(".webm")) { // Discord embed messages don't support MP4/webm files
-                    System.out.println("Dog API called  + dogImageURL");
+                    System.out.println("Dog API called"  + dogImageURL);
                     return fetchRandomDog(); // Recursively generate another random dog url
                 } else {
                     return dogImageURL;

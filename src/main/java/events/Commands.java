@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -18,6 +19,8 @@ import java.time.Instant;
 
 import static api.FortniteAPI.fetchPlayerStats;
 import static api.RandomDogAPI.fetchRandomDog;
+import static api.RandomFoxAPI.fetchRandomFox;
+
 import services.PlayerCategorizerService;
 
 public class Commands extends ListenerAdapter {
@@ -39,18 +42,30 @@ public class Commands extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
-
-        addCommands();
+        String subcommand;
 
         switch (event.getName()) {
             case "test":
                 handleTestCommand(event);
                 break;
-            case "rank":
-                handleRankCommand(event);
+            case "fortnite":
+                // Get the subcommand name. Ex: "/fortnite stats", where stats is the subcommand
+                subcommand = event.getSubcommandName();
+                    if (subcommand == null) {
+                        event.reply("Error occurred...").queue();
+                        return;
+                    } else if (subcommand.equals("stats")) {
+                        handleRankCommand(event);
+                    } else if (subcommand.equals("compare")) {
+                        //TODO: Finish compare command
+                        event.reply("Command not implemented yet...").queue();
+                    }
                 break;
             case "dog":
                 handleDogCommand(event);
+                break;
+            case "fox":
+                handleFoxCommand(event);
                 break;
         }
     }
@@ -89,21 +104,34 @@ public class Commands extends ListenerAdapter {
         StringInput = getOptionMappingAsString(event, "image", "none");
         StringUserName = userName.getAsString();
 
-        fetchPlayerStats(StringUserName, StringPlaylist, StringPlatformType, StringTimeWindow, StringInput, new FortniteAPI.PlayerStatsCallback() {
-            public void onSuccess(PlayerStats playerStats) {
-                // Call formatStatsResponse to properly format the playerStats
-                String response = formatStatsResponse(playerStats);
-
-                // Call embedStatsResponse to properly embed the formatted response into Discord
-                embedStatsResponse(response, StringUserName, event);
-            }
-
-            public void onError(String errorMessage) {
-                // Handle the error, e.g., notify the user
-                event.reply("Error fetching player stats... " + errorMessage).queue();
-            }
-        });
+        fetchPlayerStats(StringUserName, StringPlaylist, StringPlatformType, StringTimeWindow, StringInput)
+                .thenAccept(result -> {
+                    if (result == null) {
+                        // Null case: The API call failed and no result was returned
+                        event.reply("An unexpected error occurred while fetching player stats. Please try again later.").queue();
+                        return;
+                    }
+                    PlayerStats playerStats = result;
+                    String response = formatStatsResponse(playerStats);
+                    embedStatsResponse(response, StringUserName, event);
+                });
     }
+
+//        fetchPlayerStats(StringUserName, StringPlaylist, StringPlatformType, StringTimeWindow, StringInput, new FortniteAPI.PlayerStatsCallback() {
+//            public void onSuccess(PlayerStats playerStats) {
+//                // Call formatStatsResponse to properly format the playerStats
+//                String response = formatStatsResponse(playerStats);
+//
+//                // Call embedStatsResponse to properly embed the formatted response into Discord
+//                embedStatsResponse(response, StringUserName, event);
+//            }
+//
+//            public void onError(String errorMessage) {
+//                // Handle the error, e.g., notify the user
+//                event.reply("Error fetching player stats... " + errorMessage).queue();
+//            }
+//        });
+//    }
 
     public void handleDogCommand(SlashCommandInteraction event) {
         String randomDogURL = fetchRandomDog();
@@ -113,10 +141,28 @@ public class Commands extends ListenerAdapter {
                     .queue();
         } else {
             embed.setAuthor("Brownseal", botURL, botImageURL);
-            embed.setTitle("Hello world, this is dog!");
+            embed.setTitle("Hello world, this is a dog!");
             embed.setImage(randomDogURL);
             embed.setColor(new Color(56, 52, 250));
             embed.setFooter("Courtesy of random.dog");
+            embed.setTimestamp(Instant.now());
+            event.replyEmbeds(embed.build()).queue();
+            embed.clear();
+        }
+    }
+
+    public void handleFoxCommand(SlashCommandInteraction event) {
+        String randomFoxURL = fetchRandomFox();
+
+        if (randomFoxURL == null) {
+            event.reply("Error fetching random fox image...")
+                   .queue();
+        } else {
+            embed.setAuthor("Brownseal Fluffy", botURL, botImageURL);
+            embed.setTitle("Hello world, this is a fox!");
+            embed.setImage(randomFoxURL);
+            embed.setColor(new Color(255, 255, 0));
+            embed.setFooter("Courtesy of randomfox.ca");
             embed.setTimestamp(Instant.now());
             event.replyEmbeds(embed.build()).queue();
             embed.clear();
@@ -173,17 +219,36 @@ public class Commands extends ListenerAdapter {
                     .queue();
             testingGuild.upsertCommand("dog", "Random dog photo!")
                     .queue();
-            testingGuild.upsertCommand("rank", "Search your Rocket League rank!")
-                    // addOption names must be lowercase and one word
-                    .addOption(OptionType.STRING, "name", "Account Name", true)
+            testingGuild.upsertCommand("fox", "Random fox photo!")
+                    .queue();
+            testingGuild.upsertCommand("fortnite", "Fortnite Commands!")
+                    .addSubcommands(new SubcommandData ("stats", "Search a player's stats!")
+                            // addOption names must be lowercase and one word
+                            .addOption(OptionType.STRING, "name", "Account Name", true)
 
-                    // Use addOptions instead of addOption for predetermined options
-                    .addOptions(getPlaylistOption())
-                    .addOptions(getPlatformOption())
-                    .addOptions(getTimeWindowOption())
-                    .addOptions(getImageOption())
+                            // Use addOptions instead of addOption for **predetermined** options
+                            .addOptions(getPlaylistOption())
+                            .addOptions(getPlatformOption())
+                            .addOptions(getTimeWindowOption())
+                            .addOptions(getImageOption())
+                    )
+                    .addSubcommands(new SubcommandData ("compare", "Compare two players against each other! (not working)")
+                            .addOption(OptionType.STRING, "player1", "Player 1's username!", true)
+                            .addOption(OptionType.STRING, "player2", "Player 2's username!", true)
+                    )
 
                     .queue();
+//            testingGuild.upsertCommand("fortnite", "Search your Fortnite stats!")
+//                    // addOption names must be lowercase and one word
+//                    .addOption(OptionType.STRING, "name", "Account Name", true)
+//
+//                    // Use addOptions instead of addOption for predetermined options
+//                    .addOptions(getPlaylistOption())
+//                    .addOptions(getPlatformOption())
+//                    .addOptions(getTimeWindowOption())
+//                    .addOptions(getImageOption())
+//
+//                    .queue();
         } else {
             System.out.println("Guild/Server not found.");
         }

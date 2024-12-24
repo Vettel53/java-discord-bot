@@ -5,6 +5,7 @@ import events.Commands;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import java.io.File;
@@ -48,7 +49,29 @@ public class Main {
                 .enableIntents(GatewayIntent.MESSAGE_CONTENT)
                 .build().awaitReady();
 
+        //refreshCommands(bot);
         commands.setBot(bot);
+        commands.addCommands();
 
     }
+
+    public static void refreshCommands(JDA bot) {
+        Guild guild;
+        // This guild is my personal testing server, eventually global commands will be rolled out
+        guild = bot.getGuildById(1293823251004264448L);
+
+        // Delete all guild commands
+        // Notes: retrieveCommands gets stored in commandsToDelete and gets passed to next block of code and so on
+        // commandsToDelete -> means its getting passed as a parameter to next block of code
+        if (guild != null) {
+            guild.retrieveCommands().queue(commandsToDelete -> {
+                commandsToDelete.forEach(command -> {
+                    command.delete().queue(success -> {
+                        System.out.println("Deleted guild command: " + command.getName());
+                    });
+                });
+            });
+        }
+    }
+
 }
