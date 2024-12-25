@@ -36,4 +36,5 @@ build/
 
 ### Mac OS ###
 .DS_Store
-src/token.txt
+src/discordToken.txt
+src/fortniteToken.txt

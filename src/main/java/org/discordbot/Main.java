@@ -18,7 +18,7 @@ public class Main {
         String data = null;
 
         try {
-            File myToken = new File("src/token.txt");
+            File myToken = new File("src/discordToken.txt");
             Scanner myReader = new Scanner(myToken);
             while (myReader.hasNextLine()) {
                 data = myReader.nextLine();
@@ -43,7 +43,6 @@ public class Main {
         // Build JDA instance after valid token is processed.
         JDA bot =  JDABuilder.createDefault(data)
                 .setActivity(Activity.streaming("Dying of Thirst", "https://www.youtube.com/watch?v=9-XbXBq8cl8"))
-                .addEventListeners(new BotListeners())
                 .addEventListeners(manager)
                 .enableIntents(GatewayIntent.MESSAGE_CONTENT)
                 .build().awaitReady();

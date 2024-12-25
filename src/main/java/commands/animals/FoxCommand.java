@@ -21,7 +21,7 @@ public class FoxCommand {
             embed.setAuthor("Brownseal Fluffy", BOT_URL, BOT_IMAGE_URL);
             embed.setTitle("Hello world, this is a fox!");
             embed.setImage(randomFoxURL);
-            embed.setColor(new Color(255, 255, 0));
+            embed.setColor(new Color(195, 119, 4));
             embed.setFooter("Courtesy of randomfox.ca");
             embed.setTimestamp(Instant.now());
             event.replyEmbeds(embed.build()).queue();

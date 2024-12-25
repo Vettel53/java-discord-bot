@@ -1,38 +1,44 @@
 package api;
-import okhttp3.*;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.json.JSONObject;
 
 import java.io.IOException;
 
-public class RandomFoxAPI {
-    private static final String randomFoxURL = "https://randomfox.ca/api";
+public class RandomDuckAPI {
+
+    private static final String randomDuckURL = "https://random-d.uk/api/v2/random";
     private static final OkHttpClient client = new OkHttpClient();
 
-    public static String fetchRandomFox() {
+    // TODO: Implement random choosing of jpg or gif?
+    public static String fetchRandomDuck() {
         Request request = new Request.Builder()
-               .url(randomFoxURL)
-               .build();
+                .url(randomDuckURL)
+                .build();
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful() && response.body()!= null) {
                 String responseBody = response.body().string();
 
                 JSONObject json = new JSONObject(responseBody);
-                String foxImageURL = json.getString("image");
+                String duckImageURL = json.getString("url");
 
-                System.out.println("Random Fox URL: " + foxImageURL);
+                System.out.println("Random Duck URL: " + duckImageURL);
 
-                return foxImageURL;
+                return duckImageURL;
             } else {
-                System.out.println("Failed to fetch random fox: " + response.code());
+                System.out.println("Failed to fetch random duck: " + response.code());
                 return null;
             }
         } catch (IOException e) {
-            System.err.println("Error fetching random fox: " + e.getMessage());
+            System.err.println("Error fetching random duck: " + e.getMessage());
             return null;
         } catch (Exception e) {
             System.err.println("Error parsing JSON response: " + e.getMessage());
             return null;
         }
     }
+
 }

@@ -1,6 +1,8 @@
 package commands;
 
+import commands.animals.CatCommand;
 import commands.animals.DogCommand;
+import commands.animals.DuckCommand;
 import commands.animals.FoxCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
@@ -57,6 +59,15 @@ public class CommandManager extends ListenerAdapter {
             case "fox":
                 FoxCommand.handleFoxCommand(event, embed);
                 break;
+            case "duck":
+                DuckCommand.handleDuckCommand(event, embed);
+                break;
+            case "cat":
+                CatCommand.handleCatCommand(event, embed);
+                break;
+            default:
+                event.reply("Unknown command...").queue();
+                break;
         }
     }
 
@@ -74,6 +85,10 @@ public class CommandManager extends ListenerAdapter {
                     .queue();
             testingGuild.upsertCommand("fox", "Random fox photo!")
                     .queue();
+            testingGuild.upsertCommand("duck", "Random duck photo!")
+                            .queue();
+            testingGuild.upsertCommand("cat", "Random cat photo!")
+                            .queue();
             testingGuild.upsertCommand("fortnite", "Fortnite Commands!")
                     .addSubcommands(new SubcommandData ("stats", "Search a player's stats!")
                             // addOption names must be lowercase and one word

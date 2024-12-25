@@ -18,7 +18,7 @@ public class DogCommand {
             event.reply("Error fetching random dog image...")
                     .queue();
         } else {
-            embed.setAuthor("Brownseal", BOT_URL, BOT_IMAGE_URL);
+            embed.setAuthor("Brownseal Doggy", BOT_URL, BOT_IMAGE_URL);
             embed.setTitle("Hello world, this is a dog!");
             embed.setImage(randomDogURL);
             embed.setColor(new Color(56, 52, 250));

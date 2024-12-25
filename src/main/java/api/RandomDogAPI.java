@@ -33,6 +33,9 @@ public class RandomDogAPI {
         } catch (IOException e) {
             System.err.println("Error fetching random dog: " + e.getMessage());
             return null;
+        } catch (Exception e) {
+            System.err.println("Error parsing JSON response: " + e.getMessage());
+            return null;
         }
     }
 }

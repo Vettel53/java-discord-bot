@@ -2,25 +2,44 @@ package api;
 
 import models.PlayerStats;
 import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
 import services.FortniteStatsParser;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
 
 public class FortniteAPI {
     private static String API_URL_TEMPLATE = "https://fortnite-api.com/v2/stats/br/v2?name=";
     private static final OkHttpClient client = new OkHttpClient();
+    private static String API_KEY = getAPIKey();
 
 //    public static void main(String[] args) {
 //        //fetchPlayerStats();
 //    }
 
-//    public interface PlayerStatsCallback {
-//        // Callback interface
-//        // Abstract methods, must implement if this interface is used
-//        void onSuccess(PlayerStats playerStats);
-//        void onError(String errorMessage);
-//    }
+    public static String getAPIKey() {
+        try {
+            File myToken = new File("src/fortniteToken.txt");
+            Scanner myReader = new Scanner(myToken);
+            while (myReader.hasNextLine()) {
+                API_KEY = myReader.nextLine();
+                System.out.println("Your token is: " + API_KEY);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred while reading the file...");
+            e.printStackTrace();
+            System.exit(1);
+        } catch (Exception e) {
+            System.out.println("Error getting API key: " + e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
+        }
+        return API_KEY;
+    }
 
     public static CompletableFuture<PlayerStats> fetchPlayerStats(String StringUserName, String StringPlaylist, String StringPlatform, String StringTimeWindow, String StringInput) {
 
@@ -43,7 +62,7 @@ public class FortniteAPI {
 
         Request request = new Request.Builder()
                 .url(API_URL)
-                .header("Authorization", "3b83ac55-313f-4330-a361-55bacf777a6b")
+                .header("Authorization", API_KEY)
                 .build();
 
         return CompletableFuture.supplyAsync(() -> {
