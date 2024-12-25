@@ -1,7 +1,6 @@
 package org.discordbot;
 
-import events.BotListeners;
-import events.Commands;
+import commands.CommandManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -39,19 +38,19 @@ public class Main {
             // 2. I use a setter method after the bot is initialized to pass it to the Command class.
         // STEPS: Command class initialized - > bot built - > setter method passes bot to Command class
 
-        Commands commands = new Commands();
+        CommandManager manager = new CommandManager();
 
         // Build JDA instance after valid token is processed.
         JDA bot =  JDABuilder.createDefault(data)
                 .setActivity(Activity.streaming("Dying of Thirst", "https://www.youtube.com/watch?v=9-XbXBq8cl8"))
                 .addEventListeners(new BotListeners())
-                .addEventListeners(commands)
+                .addEventListeners(manager)
                 .enableIntents(GatewayIntent.MESSAGE_CONTENT)
                 .build().awaitReady();
 
         //refreshCommands(bot);
-        commands.setBot(bot);
-        commands.addCommands();
+        manager.setBot(bot);
+        manager.addCommands();
 
     }
 
