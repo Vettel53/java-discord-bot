@@ -65,6 +65,11 @@ public class CommandManager extends ListenerAdapter {
             case "cat":
                 CatCommand.handleCatCommand(event, embed);
                 break;
+            case "statistics":
+                InformationCommand infoCommand = new InformationCommand();
+                infoCommand.handleInformationCommand(event, embed);
+                break;
+            // Add more commands here...
             default:
                 event.reply("Unknown command...").queue();
                 break;
@@ -89,6 +94,8 @@ public class CommandManager extends ListenerAdapter {
                             .queue();
             testingGuild.upsertCommand("cat", "Random cat photo!")
                             .queue();
+            testingGuild.upsertCommand("statistics", "Statistics about Brownseal!")
+                    .queue();
             testingGuild.upsertCommand("fortnite", "Fortnite Commands!")
                     .addSubcommands(new SubcommandData ("stats", "Search a player's stats!")
                             // addOption names must be lowercase and one word
