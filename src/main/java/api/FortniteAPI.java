@@ -23,7 +23,7 @@ public class FortniteAPI {
 
     public static String getAPIKey() {
         try {
-            File myToken = new File("src/fortniteToken.txt");
+            File myToken = new File("src/main/java/config/fortniteToken.txt");
             Scanner myReader = new Scanner(myToken);
             while (myReader.hasNextLine()) {
                 API_KEY = myReader.nextLine();

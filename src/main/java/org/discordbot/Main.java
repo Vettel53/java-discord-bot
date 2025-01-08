@@ -18,7 +18,7 @@ public class Main {
         String data = null;
 
         try {
-            File myToken = new File("src/discordToken.txt");
+            File myToken = new File("src/main/java/config/discordToken.txt");
             Scanner myReader = new Scanner(myToken);
             while (myReader.hasNextLine()) {
                 data = myReader.nextLine();
