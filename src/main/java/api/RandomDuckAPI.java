@@ -1,5 +1,6 @@
 package api;
 
+import config.OkHttpClientSingleton;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -10,7 +11,7 @@ import java.io.IOException;
 public class RandomDuckAPI {
 
     private static final String randomDuckURL = "https://random-d.uk/api/v2/random";
-    private static final OkHttpClient client = new OkHttpClient();
+    private static final OkHttpClient client = OkHttpClientSingleton.getInstance();
 
     // TODO: Implement random choosing of jpg or gif?
     public static String fetchRandomDuck() {

@@ -50,6 +50,8 @@ public class CommandManager extends ListenerAdapter {
                         fnCommand.handleStatsCommand(event, embed);
                     } else if (subcommand.equals("compare")) {
                         //TODO: Finish compare command
+                        //PlayerStats
+
                         event.reply("Command not implemented yet...").queue();
                     }
                 break;

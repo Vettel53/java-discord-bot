@@ -16,7 +16,11 @@ import static config.BotConstants.BOT_URL;
 public class FortniteCommand {
 
     public void handleStatsCommand(SlashCommandInteraction event, EmbedBuilder embed) {
-        // TODO: Document the reason for using discordUserName instead
+
+        // Get the subcommand name that was used in the "fortnite" command
+        String subCommandUsed = event.getSubcommandName();
+
+        // Get options (OptionMapping) and ensure they are not null
         OptionMapping discordUserName = event.getOption("name");
         // Two sets of variables
         // OptionMapping -> Stores the OptionMapping objects for each option of the command
@@ -42,6 +46,7 @@ public class FortniteCommand {
         StringUserName = userName.getAsString();
 
         fetchPlayerStats(StringUserName, StringPlaylist, StringPlatformType, StringTimeWindow, StringInput)
+                // fetchPlayerStats returns a PlayerStats object which is stored in "result"
                 .thenAccept(result -> {
                     if (result == null) {
                         // Null case: The API call failed and no result was returned
@@ -50,7 +55,18 @@ public class FortniteCommand {
                     }
                     PlayerStats playerStats = result;
                     String response = formatStatsResponse(playerStats);
-                    embedStatsResponse(response, StringUserName, event, embed);
+
+                    if (subCommandUsed == null) {
+                        // Error occurred
+                        event.reply(response).queue();
+                    } else if (subCommandUsed.equals("stats")) {
+                        embedStatsResponse(response, StringUserName, event, embed);
+                    } else if (subCommandUsed.equals("compare")) {
+                        // TODO
+                    } else {
+                        // Error occurred
+                        event.reply("Unknown subcommand: " + subCommandUsed).queue();
+                    }
                 });
     }
 

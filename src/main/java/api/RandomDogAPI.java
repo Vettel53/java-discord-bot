@@ -1,11 +1,12 @@
 package api;
+import config.OkHttpClientSingleton;
 import org.json.JSONObject;
 import okhttp3.*;
 import java.io.IOException;
 
 public class RandomDogAPI {
     private static final String randomDogURL = "https://random.dog/woof.json";
-    private static final OkHttpClient client = new OkHttpClient();
+    private static final OkHttpClient client = OkHttpClientSingleton.getInstance();
 
     public static String fetchRandomDog() {
 

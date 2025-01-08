@@ -1,4 +1,5 @@
 package api;
+import config.OkHttpClientSingleton;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -7,7 +8,7 @@ import java.io.IOException;
 
 public class RandomCatAPI {
     private static final String randomCatURL = "https://api.thecatapi.com/v1/images/search";
-    private static final OkHttpClient client = new OkHttpClient();
+    private static final OkHttpClient client = OkHttpClientSingleton.getInstance();
 
     public static String fetchRandomCat() {
         Request request = new Request.Builder()

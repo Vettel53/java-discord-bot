@@ -1,4 +1,5 @@
 package api;
+import config.OkHttpClientSingleton;
 import okhttp3.*;
 import org.json.JSONObject;
 
@@ -6,7 +7,7 @@ import java.io.IOException;
 
 public class RandomFoxAPI {
     private static final String randomFoxURL = "https://randomfox.ca/api";
-    private static final OkHttpClient client = new OkHttpClient();
+    private static final OkHttpClient client = OkHttpClientSingleton.getInstance();
 
     public static String fetchRandomFox() {
         Request request = new Request.Builder()

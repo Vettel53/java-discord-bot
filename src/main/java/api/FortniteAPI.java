@@ -1,5 +1,6 @@
 package api;
 
+import config.OkHttpClientSingleton;
 import models.PlayerStats;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class FortniteAPI {
     private static String API_URL_TEMPLATE = "https://fortnite-api.com/v2/stats/br/v2?name=";
-    private static final OkHttpClient client = new OkHttpClient();
+    private static final OkHttpClient client = OkHttpClientSingleton.getInstance();
     private static String API_KEY = getAPIKey();
 
 //    public static void main(String[] args) {
