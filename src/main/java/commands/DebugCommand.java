@@ -9,7 +9,9 @@ import java.awt.*;
 // Debugging command, edit to random stuff when testing
 public class DebugCommand {
 
-    public static void handleDebugCommand(SlashCommandInteraction event, EmbedBuilder embed) {
+    public static void handleDebugCommand(SlashCommandInteraction event) {
+        EmbedBuilder embed = new EmbedBuilder();
+
         embed.setTitle("Debug Command");
         embed.setDescription("This is a debug command.");
         embed.setColor(new Color(255,255,255));

@@ -26,10 +26,12 @@ public class InformationCommand {
         this.availableProcessors = Runtime.getRuntime().availableProcessors();
     }
 
-    public void handleInformationCommand(SlashCommandInteraction event, EmbedBuilder embed) {
+    public void handleInformationCommand(SlashCommandInteraction event) {
 
         try {
             String response = formatInformationResponse();
+
+            EmbedBuilder embed = new EmbedBuilder();
 
             embed.setAuthor("Brownseal Statistics", BOT_URL, BOT_IMAGE_URL );
             embed.setTitle("Interesting Information!");

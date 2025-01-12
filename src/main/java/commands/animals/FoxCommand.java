@@ -11,13 +11,15 @@ import static config.BotConstants.*;
 
 public class FoxCommand {
 
-    public static void handleFoxCommand(SlashCommandInteraction event, EmbedBuilder embed) {
+    public static void handleFoxCommand(SlashCommandInteraction event) {
         String randomFoxURL = RandomFoxAPI.fetchRandomFox();
 
         if (randomFoxURL == null) {
             event.reply("Error fetching random fox image...")
                     .queue();
         } else {
+            EmbedBuilder embed = new EmbedBuilder();
+
             embed.setAuthor("Brownseal Fluffy", BOT_URL, BOT_IMAGE_URL);
             embed.setTitle("Hello world, this is a fox!");
             embed.setImage(randomFoxURL);

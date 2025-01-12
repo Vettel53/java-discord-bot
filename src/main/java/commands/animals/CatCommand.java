@@ -12,13 +12,15 @@ import static config.BotConstants.BOT_URL;
 
 public class CatCommand {
 
-    public static void handleCatCommand(SlashCommandInteraction event, EmbedBuilder embed) {
+    public static void handleCatCommand(SlashCommandInteraction event) {
         String randomCatURL = RandomCatAPI.fetchRandomCat();
 
         if (randomCatURL == null) {
             event.reply("Error fetching random cat image...")
                     .queue();
         } else {
+            EmbedBuilder embed = new EmbedBuilder();
+
             embed.setAuthor("Brownseal Meow", BOT_URL, BOT_IMAGE_URL);
             embed.setTitle("Hello world, this is a cat!");
             embed.setImage(randomCatURL);

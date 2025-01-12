@@ -4,6 +4,7 @@ import models.PlayerStats;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
+import services.FortniteComparePlayers;
 import services.PlayerCategorizerService;
 
 import java.awt.*;
@@ -15,59 +16,42 @@ import static config.BotConstants.BOT_URL;
 
 public class FortniteCommand {
 
-    public void handleStatsCommand(SlashCommandInteraction event, EmbedBuilder embed) {
+    public void handleStatsCommand(SlashCommandInteraction event) {
 
-        // Get the subcommand name that was used in the "fortnite" command
+        // Get the subcommand name
         String subCommandUsed = event.getSubcommandName();
 
-        // Get options (OptionMapping) and ensure they are not null
-        OptionMapping discordUserName = event.getOption("name");
-        // Two sets of variables
-        // OptionMapping -> Stores the OptionMapping objects for each option of the command
-        // String -> Stores the String value of the OptionMapping objects (ex: userPlatform or userName) in the event
-        String StringUserName, StringPlaylist, StringPlatformType, StringTimeWindow, StringInput;
-        OptionMapping userName;
-
-        // Get options (Stored as OptionMapping)
-        userName = event.getOption("name");
-        // Check if options are null, highly unlikely, but correct to check.
-        if (userName == null) {
-            event.reply("Sorry, we encountered an error. Please try again...").queue();
+        if (subCommandUsed == null) {
+            event.reply("Error: Subcommand is required, but was not provided.").queue();
             return;
         }
 
-        // Get OptionMappings userName as a proper Strings and handle if they are null
-        // If they are null, we will use the default values for the parameters as specified in the fortnite-api
-        // https://dash.fortnite-api.com/endpoints/stats
-        StringPlaylist = getOptionMappingAsString(event, "playlist", "overall");
-        StringPlatformType = getOptionMappingAsString(event, "accountplatform", "epic");
-        StringTimeWindow = getOptionMappingAsString(event, "timewindow", "lifetime");
-        StringInput = getOptionMappingAsString(event, "image", "none");
-        StringUserName = userName.getAsString();
+        switch (subCommandUsed) {
+            case "stats":
+                // Validate the options
+                OptionMapping userNameOption = event.getOption("name");
+                if (userNameOption == null) {
+                    event.reply("Sorry, we encountered an error. Please try again...").queue();
+                    return;
+                }
 
-        fetchPlayerStats(StringUserName, StringPlaylist, StringPlatformType, StringTimeWindow, StringInput)
-                // fetchPlayerStats returns a PlayerStats object which is stored in "result"
-                .thenAccept(result -> {
-                    if (result == null) {
-                        // Null case: The API call failed and no result was returned
-                        event.reply("An unexpected error occurred while fetching player stats. Please try again later.").queue();
-                        return;
-                    }
-                    PlayerStats playerStats = result;
-                    String response = formatStatsResponse(playerStats);
-
-                    if (subCommandUsed == null) {
-                        // Error occurred
-                        event.reply(response).queue();
-                    } else if (subCommandUsed.equals("stats")) {
-                        embedStatsResponse(response, StringUserName, event, embed);
-                    } else if (subCommandUsed.equals("compare")) {
-                        // TODO
-                    } else {
-                        // Error occurred
-                        event.reply("Unknown subcommand: " + subCommandUsed).queue();
-                    }
-                });
+                // Extract OptionMapping's as Strings
+                // If they are null, we will use the default values for the parameters as specified in the fortnite-api
+                // https://dash.fortnite-api.com/endpoints/stats
+                String userName = userNameOption.getAsString();
+                String playlist = getOptionMappingAsString(event, "playlist", "overall");
+                String platformType = getOptionMappingAsString(event, "accountplatform", "epic");
+                String timeWindow = getOptionMappingAsString(event, "timewindow", "lifetime");
+                String imageOption = getOptionMappingAsString(event, "image", "none");
+                handleStatsSubcommand(event, userName, playlist, platformType, timeWindow, imageOption);
+                break;
+            case "compare":
+                handleCompareSubCommand(event);
+                break;
+            default:
+                event.reply("Error: Invalid subcommand. Please choose either 'stats' or 'compare'.").queue();
+                break;
+        }
     }
 
     public String getOptionMappingAsString(SlashCommandInteraction event, String optionName, String defaultValue) {
@@ -94,8 +78,9 @@ public class FortniteCommand {
         return formattedResponse;
     }
 
-    public void embedStatsResponse(String response, String name, SlashCommandInteraction event, EmbedBuilder embed) {
+    public void embedStatsResponse(String response, String name, SlashCommandInteraction event) {
         // Send the formatted response back to Discord as an embed
+        EmbedBuilder embed = new EmbedBuilder();
 
         embed.setAuthor("Brownseal", BOT_URL, BOT_IMAGE_URL );
         embed.setTitle("Fortnite Stats for " + name);
@@ -106,6 +91,35 @@ public class FortniteCommand {
         embed.setTimestamp(Instant.now());
         event.replyEmbeds(embed.build()).queue();
         embed.clear();
+    }
+
+    private void handleStatsSubcommand(SlashCommandInteraction event, String userName, String playlist, String platformType, String timeWindow, String imageOption) {
+
+        fetchPlayerStats(userName, playlist, platformType, timeWindow, imageOption)
+                // fetchPlayerStats returns a PlayerStats object which is stored in "result"
+                .thenAccept(result -> {
+                    if (result == null) {
+                        // Null case: The API call failed and no result was returned
+                        event.reply("An unexpected error occurred while fetching player stats. Please try again later.").queue();
+                        return;
+                    }
+                    PlayerStats playerStats = result;
+                    String response = formatStatsResponse(playerStats);
+                    embedStatsResponse(response, userName, event);
+                })
+                .exceptionally(throwable -> {
+                     // Error case: The API call failed and an exception occurred
+                     event.reply("An error occurred while fetching player stats: " + throwable.getMessage()).queue();
+                    return null;
+                });
+    }
+
+    private void handleCompareSubCommand(SlashCommandInteraction event) {
+
+        String player1 = getOptionMappingAsString(event, "player1", null);
+        String player2 = getOptionMappingAsString(event, "player2", null);
+        System.out.println(player1 + " " + player2);
+        FortniteComparePlayers.comparePlayers(event, player1, player2);
     }
 
 }

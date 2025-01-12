@@ -4,7 +4,6 @@ import commands.animals.CatCommand;
 import commands.animals.DogCommand;
 import commands.animals.DuckCommand;
 import commands.animals.FoxCommand;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -21,7 +20,6 @@ public class CommandManager extends ListenerAdapter {
     // May take up to an hour to register this command. Use Guild for testing
     // Guild Commands - They can only be used in a specific guild
     private JDA bot = null;
-    EmbedBuilder embed = new EmbedBuilder();
     FortniteCommand fnCommand = new FortniteCommand();
 
     public CommandManager() {
@@ -38,7 +36,7 @@ public class CommandManager extends ListenerAdapter {
 
         switch (event.getName()) {
             case "test":
-                DebugCommand.handleDebugCommand(event, embed);
+                DebugCommand.handleDebugCommand(event);
                 break;
             case "fortnite":
                 // Get the subcommand name. Ex: "/fortnite stats", where stats is the subcommand
@@ -46,30 +44,24 @@ public class CommandManager extends ListenerAdapter {
                     if (subcommand == null) {
                         event.reply("Error occurred...").queue();
                         return;
-                    } else if (subcommand.equals("stats")) {
-                        fnCommand.handleStatsCommand(event, embed);
-                    } else if (subcommand.equals("compare")) {
-                        //TODO: Finish compare command
-                        //PlayerStats
-
-                        event.reply("Command not implemented yet...").queue();
                     }
+                fnCommand.handleStatsCommand(event);
                 break;
             case "dog":
-                DogCommand.handleDogCommand(event, embed);
+                DogCommand.handleDogCommand(event);
                 break;
             case "fox":
-                FoxCommand.handleFoxCommand(event, embed);
+                FoxCommand.handleFoxCommand(event);
                 break;
             case "duck":
-                DuckCommand.handleDuckCommand(event, embed);
+                DuckCommand.handleDuckCommand(event);
                 break;
             case "cat":
-                CatCommand.handleCatCommand(event, embed);
+                CatCommand.handleCatCommand(event);
                 break;
             case "statistics":
                 InformationCommand infoCommand = new InformationCommand();
-                infoCommand.handleInformationCommand(event, embed);
+                infoCommand.handleInformationCommand(event);
                 break;
             // Add more commands here...
             default:

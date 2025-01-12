@@ -12,13 +12,15 @@ import static config.BotConstants.BOT_URL;
 
 public class DuckCommand {
 
-    public static void handleDuckCommand(SlashCommandInteraction event, EmbedBuilder embed) {
+    public static void handleDuckCommand(SlashCommandInteraction event) {
         String randomDuckURL = RandomDuckAPI.fetchRandomDuck();
 
         if (randomDuckURL == null) {
             event.reply("Error fetching random Duck image...")
                     .queue();
         } else {
+            EmbedBuilder embed = new EmbedBuilder();
+
             embed.setAuthor("Brownseal Ducky", BOT_URL, BOT_IMAGE_URL);
             embed.setTitle("Hello world, this is a duck!");
             embed.setImage(randomDuckURL);

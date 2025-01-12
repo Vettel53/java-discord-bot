@@ -11,13 +11,15 @@ import static config.BotConstants.*;
 
 public class DogCommand {
 
-    public static void handleDogCommand(SlashCommandInteraction event, EmbedBuilder embed) {
+    public static void handleDogCommand(SlashCommandInteraction event) {
         String randomDogURL = RandomDogAPI.fetchRandomDog();
 
         if (randomDogURL == null) {
             event.reply("Error fetching random dog image...")
                     .queue();
         } else {
+            EmbedBuilder embed = new EmbedBuilder();
+
             embed.setAuthor("Brownseal Doggy", BOT_URL, BOT_IMAGE_URL);
             embed.setTitle("Hello world, this is a dog!");
             embed.setImage(randomDogURL);
