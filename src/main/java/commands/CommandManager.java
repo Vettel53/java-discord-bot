@@ -13,6 +13,9 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import org.jetbrains.annotations.NotNull;
 
+import static services.UserCommandCooldown.getRemainingCooldown;
+import static services.UserCommandCooldown.isUserOnCooldown;
+
 
 public class CommandManager extends ListenerAdapter {
     // Regarding Commands - >
@@ -33,6 +36,15 @@ public class CommandManager extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         String subcommand;
+
+        String userID = event.getUser().getId();
+
+        if (isUserOnCooldown(userID)) { // Check if user is on cooldown
+            long remainingTime = System.currentTimeMillis() - getRemainingCooldown(userID);
+            String response = String.format("Please wait %.1f second(s) before sending another command!", remainingTime / 1000.0);
+            event.reply(response).queue();
+            return;
+        }
 
         switch (event.getName()) {
             case "test":

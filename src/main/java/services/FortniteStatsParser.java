@@ -17,7 +17,7 @@ public class FortniteStatsParser {
     public static PlayerStats parsePlayerStats(String jsonDataToParse, String StringPlaylist) {
         jsonFortniteStats = jsonDataToParse;
 
-        System.out.println(jsonFortniteStats);
+        //System.out.println(jsonFortniteStats);
 
         JSONObject jsonObject = new JSONObject(jsonFortniteStats);
 
@@ -88,14 +88,14 @@ public class FortniteStatsParser {
                 break;
         }
 
-        System.out.println("Kills: " + kills);
-        System.out.println("wins: " + wins);
-        System.out.println("minutesPlayed: " + minutesPlayed);
-        System.out.printf("K/D Ratio: %.2f%n", killDeathRatio);
-        System.out.println("lastUpdatedData: " + lastUpdatedData);
-
-        System.out.println("Player Name: " + playerName);
-        System.out.println("Battle Pass Level: " + battlePassLevel);
+//        System.out.println("Kills: " + kills);
+//        System.out.println("wins: " + wins);
+//        System.out.println("minutesPlayed: " + minutesPlayed);
+//        System.out.printf("K/D Ratio: %.2f%n", killDeathRatio);
+//        System.out.println("lastUpdatedData: " + lastUpdatedData);
+//
+//        System.out.println("Player Name: " + playerName);
+//        System.out.println("Battle Pass Level: " + battlePassLevel);
 
         return new PlayerStats(playerName, battlePassLevel, kills, wins, minutesPlayed, killDeathRatio, lastUpdatedData);
     }

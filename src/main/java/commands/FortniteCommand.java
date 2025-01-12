@@ -13,6 +13,7 @@ import java.time.Instant;
 import static api.FortniteAPI.fetchPlayerStats;
 import static config.BotConstants.BOT_IMAGE_URL;
 import static config.BotConstants.BOT_URL;
+import static services.UserCommandCooldown.isUserOnCooldown;
 
 public class FortniteCommand {
 
