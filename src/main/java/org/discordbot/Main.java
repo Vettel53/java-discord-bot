@@ -11,9 +11,21 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+/**
+ * Main class for the Discord bot.
+ *
+ * This class initializes the bot, reads the Discord token from a file, and CAN refresh the guild commands if edited.
+ *
+ * @author Vettel53
+ */
 public class Main {
+
+    /**
+     * Main method to run the bot.
+     *
+     * @param args Command-line arguments (not used in this case).
+     * @throws InterruptedException If the bot initialization is interrupted.
+     */
     public static void main(String[] args) throws InterruptedException {
         String data = null;
 
@@ -53,6 +65,13 @@ public class Main {
 
     }
 
+    /**
+     * Refreshes the guild commands.
+     *
+     * Deletes all guild commands and prints the names of the deleted commands.
+     *
+     * @param bot The JDA instance representing the bot.
+     */
     public static void refreshCommands(JDA bot) {
         Guild guild;
         // This guild is my personal testing server, eventually global commands will be rolled out

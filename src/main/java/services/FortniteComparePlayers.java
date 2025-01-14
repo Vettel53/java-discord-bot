@@ -12,15 +12,25 @@ import static api.FortniteAPI.fetchPlayerStats;
 import static config.BotConstants.BOT_IMAGE_URL;
 import static config.BotConstants.BOT_URL;
 
+/**
+ * This class contains methods for comparing Fortnite player stats.
+ */
 public class FortniteComparePlayers {
 
+    /**
+     * Compares two Fortnite players' stats and determines the better one.
+     *
+     * @param event The Discord interaction event.
+     * @param player1 The first player's username / platform-specific identifier.
+     * @param player2 The second player's username / platform-specific identifier.
+     */
     public static void comparePlayers(SlashCommandInteraction event, String player1, String player2) {
         // Validate inputs
         if (player1 == null || player2 == null) {
             event.reply("Sorry, we encountered an error. Please try again...").queue();
         }
 
-        // Default values for api
+        // Default values for API
         String playlist = "overall";
         String platformType = "epic";
         String timeWindow = "lifetime";
@@ -49,6 +59,14 @@ public class FortniteComparePlayers {
 
     }
 
+    /**
+     * Determines which player is better based on their Fortnite stats.
+     * Uses "weights" to determine which statistics have more importance.
+     *
+     * @param event The Discord interaction event.
+     * @param player1 The first player's stats.
+     * @param player2 The second player's stats.
+     */
     private static void determineBetterPlayer(SlashCommandInteraction event, PlayerStats player1, PlayerStats player2) {
         // Get player names
         String player1Name = player1.getPlayerName();
@@ -101,11 +119,16 @@ public class FortniteComparePlayers {
 
     }
 
+    /**
+     * Sends the formatted response back to Discord as an embed.
+     *
+     * @param event The Discord interaction event.
+     * @param response The formatted response string.
+     */
     public static void embedCompareResponse(SlashCommandInteraction event, String response) {
         // Send the formatted response back to Discord as an embed
         EmbedBuilder embed = new EmbedBuilder();
 
-        //noinspection SpellCheckingInspection
         embed.setAuthor("Brownseal", BOT_URL, BOT_IMAGE_URL );
         embed.setTitle("Fortnite Stats Comparison");
         embed.setDescription(response);

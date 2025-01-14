@@ -12,6 +12,8 @@ public class FortniteStatsParser {
      *
      * @param jsonDataToParse A JSON string containing Fortnite player statistics.
      *                        The JSON string should be in the format returned by the Fortnite API.
+     * @param StringPlaylist A string representing the Fortnite playlist for which the statistics are to be parsed.
+     *                       The supported values are "overall", "solo", "duo", "squad", and "ltm".
      * @return A PlayerStats object containing the correctly parsed statistics.
      */
     public static PlayerStats parsePlayerStats(String jsonDataToParse, String StringPlaylist) {

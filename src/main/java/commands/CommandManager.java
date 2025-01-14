@@ -13,10 +13,22 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.CompletableFuture;
+
 import static services.UserCommandCooldown.getRemainingCooldown;
 import static services.UserCommandCooldown.isUserOnCooldown;
 
 
+/**
+ * Manages and handles slash commands for the Discord bot.
+ *
+ * This class extends the ListenerAdapter to listen for slash command interactions.
+ * Provides methods where you can edit to add commands to the bot
+ * and handle different command types.
+ *
+ * @author Vettel53
+ * @version 1.0
+ */
 public class CommandManager extends ListenerAdapter {
     // Regarding Commands - >
     // Global Commands - Can be used anywhere: Any guild that your bot is in and also in DMs
@@ -25,17 +37,32 @@ public class CommandManager extends ListenerAdapter {
     private JDA bot = null;
     FortniteCommand fnCommand = new FortniteCommand();
 
+    /**
+     * Default constructor for CommandManager.
+     */
     public CommandManager() {
 
     }
 
+    /**
+     * Sets the JDA bot instance for the CommandManager.
+     *
+     * @param bot The JDA bot instance.
+     */
     public void setBot(JDA bot) {
         this.bot = bot;
     }
 
+    /**
+     * Handles slash command interactions.
+     *
+     * This method checks if the user is on cooldown, processes the command, and executes the appropriate command handler.
+     *
+     * @param event The SlashCommandInteractionEvent containing information about the command interaction.
+     */
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
-        String subcommand;
+        //event.deferReply().queue(); Use event.getHook to respond after this, still debating using
 
         String userID = event.getUser().getId();
 
@@ -46,42 +73,56 @@ public class CommandManager extends ListenerAdapter {
             return;
         }
 
-        switch (event.getName()) {
-            case "test":
-                DebugCommand.handleDebugCommand(event);
-                break;
-            case "fortnite":
-                // Get the subcommand name. Ex: "/fortnite stats", where stats is the subcommand
-                subcommand = event.getSubcommandName();
-                    if (subcommand == null) {
-                        event.reply("Error occurred...").queue();
-                        return;
-                    }
-                fnCommand.handleStatsCommand(event);
-                break;
-            case "dog":
-                DogCommand.handleDogCommand(event);
-                break;
-            case "fox":
-                FoxCommand.handleFoxCommand(event);
-                break;
-            case "duck":
-                DuckCommand.handleDuckCommand(event);
-                break;
-            case "cat":
-                CatCommand.handleCatCommand(event);
-                break;
-            case "statistics":
-                InformationCommand infoCommand = new InformationCommand();
-                infoCommand.handleInformationCommand(event);
-                break;
-            // Add more commands here...
-            default:
-                event.reply("Unknown command...").queue();
-                break;
-        }
+        CompletableFuture.runAsync(() -> {
+            String subcommand;
+
+            switch (event.getName()) {
+                case "test":
+                    DebugCommand.handleDebugCommand(event);
+                    break;
+                case "fortnite":
+                    // Get the subcommand name. Ex: "/fortnite stats", where stats is the subcommand
+                    subcommand = event.getSubcommandName();
+                        if (subcommand == null) {
+                            event.reply("Error occurred...").queue();
+                            return;
+                        }
+                    fnCommand.handleStatsCommand(event);
+                    break;
+                case "dog":
+                    DogCommand.handleDogCommand(event);
+                    break;
+                case "fox":
+                    FoxCommand.handleFoxCommand(event);
+                    break;
+                case "duck":
+                    DuckCommand.handleDuckCommand(event);
+                    break;
+                case "cat":
+                    CatCommand.handleCatCommand(event);
+                    break;
+                case "statistics":
+                    InformationCommand infoCommand = new InformationCommand();
+                    infoCommand.handleInformationCommand(event);
+                    break;
+                case "avatar":
+                    AvatarCommand.handleAvatarCommand(event);
+                    break;
+                // Add more commands here...
+                default:
+                    event.reply("Unknown command...").queue();
+                    break;
+            }
+        });
     }
 
+    // TODO: Document how to run this bot and maybe do global commands.
+    /**
+     * Adds commands to the bot.
+     *
+     * This method adds commands to a specific guild (testingGuild) for testing purposes.
+     * It also adds subcommands to the "fortnite" command.
+     */
     public void addCommands() {
         Guild testingGuild;
         // This guild is my personal testing server, eventually global commands will be rolled out
@@ -101,6 +142,8 @@ public class CommandManager extends ListenerAdapter {
             testingGuild.upsertCommand("cat", "Random cat photo!")
                             .queue();
             testingGuild.upsertCommand("statistics", "Statistics about Brownseal!")
+                    .queue();
+            testingGuild.upsertCommand("avatar", "Get your avatar!")
                     .queue();
             testingGuild.upsertCommand("fortnite", "Fortnite Commands!")
                     .addSubcommands(new SubcommandData ("stats", "Search a player's stats!")

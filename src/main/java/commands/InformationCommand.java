@@ -17,7 +17,13 @@ public class InformationCommand {
     private final int activeThreads;
     private final int availableProcessors;
 
-    // Using instance variables to avoid "race conditions" and shared variables
+    /**
+     * Constructs an <b>InformationCommand object</b>, initializing system statistics
+     * such as memory usage, active thread count, and available processors.
+     * This constructor captures the current state of the system resources
+     * to be used in generating information responses. Uses instance variables
+     * to avoid "race conditions" and shared variables
+     */
     public InformationCommand() {
         this.maxMemory = Runtime.getRuntime().maxMemory();
         this.allocatedMemory = Runtime.getRuntime().totalMemory();
@@ -26,6 +32,13 @@ public class InformationCommand {
         this.availableProcessors = Runtime.getRuntime().availableProcessors();
     }
 
+    /**
+     * Handles the information command by generating and sending an embedded message
+     * containing system statistics and bot information to the Discord channel.
+     *
+     * @param event the SlashCommandInteraction event that triggered this command,
+     *              providing context and methods to reply to the interaction.
+     */
     public void handleInformationCommand(SlashCommandInteraction event) {
 
         try {
@@ -48,6 +61,13 @@ public class InformationCommand {
 
     }
 
+    /**
+     * Formats and returns a <b>String</b> containing system and environment information.
+     * This includes details about the operating system, Java version, memory usage,
+     * thread count, and processor count.
+     *
+     * @return A formatted <b>String</b> with system statistics and environment details.
+     */
     public String formatInformationResponse() {
 
         String formattedResponse = "**OS Name: **" + System.getProperty("os.name") + "\n\n"

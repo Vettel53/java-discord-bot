@@ -2,8 +2,17 @@ package services;
 
 import models.PlayerStats;
 
+/**
+ * This class provides a service for categorizing player statistics based on their kill-death ratio.
+ */
 public class PlayerCategorizerService {
 
+    /**
+     * Categorizes a player's kill-death ratio into a specific group.
+     *
+     * @param stats The player's statistics object containing the kill-death ratio.
+     * @return A <b>String</b> representing the player's categorized group based on their kill-death ratio.
+     */
     public static String categorizeKillDeath(PlayerStats stats) {
         double playerKD = stats.getKillDeathRatio();
         // TODO: Add more categories if needed.

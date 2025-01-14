@@ -12,14 +12,19 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * This class provides methods to interact with the Fortnite API.
+ */
 public class FortniteAPI {
-    private static String API_URL_TEMPLATE = "https://fortnite-api.com/v2/stats/br/v2?name=";
+    private static final String API_URL_TEMPLATE = "https://fortnite-api.com/v2/stats/br/v2?name=";
     private static final OkHttpClient client = OkHttpClientSingleton.getInstance();
     private static String API_KEY = getAPIKey();
 
-//    public static void main(String[] args) {
-//        //fetchPlayerStats();
-//    }
+    /**
+     * Retrieves the API key from a file (fortniteToken.txt) and returns it.
+     * Make sure the file is located in the <b>config package/folder</b>
+     * @return The Fortnite API key.
+     */
 
     public static String getAPIKey() {
         try {
@@ -31,23 +36,35 @@ public class FortniteAPI {
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred while reading the file...");
+            System.out.println("An error occurred while reading the file... " + e.getMessage());
+            System.out.println("Make sure the file (fortniteToken.txt) is located in the config folder!");
             e.printStackTrace();
             System.exit(1);
         } catch (Exception e) {
-            System.out.println("Error getting API key: " + e.getMessage());
+            System.out.println("Error getting API key (" + API_KEY + "): " + e.getMessage());
+            System.out.println("Verify your API key is entered correctly by itself!");
             e.printStackTrace();
             System.exit(1);
         }
         return API_KEY;
     }
 
+    /**
+     * Fetches player statistics asynchronously using the provided parameters.
+     *
+     * @param StringUserName The username of the player.
+     * @param StringPlaylist The playlist for which the stats should be fetched.
+     * @param StringPlatform The platform (e.g., epic, steam).
+     * @param StringTimeWindow The time window for which the stats should be fetched.
+     * @param StringInput Additional input parameters for the API request.
+     * @return A CompletableFuture that completes with the fetched player statistics.
+     */
     public static CompletableFuture<PlayerStats> fetchPlayerStats(String StringUserName, String StringPlaylist, String StringPlatform, String StringTimeWindow, String StringInput) {
 
         // Explanation of how the API url works
         // https://i.ibb.co/1GyTXH6/url-structure-1.webp
 
-        // To construct URL we must add more variables and use the & to seperate the parameters
+        // To construct URL we must add more variables and use the & to separate the parameters
         // EXAMPLE: String API_URL = String.format(API_URL_TEMPLATE, playerName + "&timeWindow=season");
         String queryParams = String.format(
                 "&accountType=%s&timeWindow=%s&image=%s",
@@ -98,7 +115,7 @@ public class FortniteAPI {
 //        // Explanation of how the API url works
 //        // https://i.ibb.co/1GyTXH6/url-structure-1.webp
 //
-//        // To construct URL we must add more variables and use the & to seperate the parameters
+//        // To construct URL we must add more variables and use the & to separate the parameters
 //        // EXAMPLE: String API_URL = String.format(API_URL_TEMPLATE, playerName + "&timeWindow=season");
 //        String queryParams = String.format(
 //                "&accountType=%s&timeWindow=%s&image=%s",

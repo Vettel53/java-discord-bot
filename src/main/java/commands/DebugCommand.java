@@ -9,6 +9,13 @@ import java.awt.*;
 // Debugging command, edit to random stuff when testing
 public class DebugCommand {
 
+    /**
+     * <p>
+     *     Simple debug command where you can edit/test random things.
+     * </p>
+     * @param event the SlashCommandInteraction event that triggered this command,
+     *  providing context and methods to reply to the interaction.
+     */
     public static void handleDebugCommand(SlashCommandInteraction event) {
         EmbedBuilder embed = new EmbedBuilder();
 
