@@ -1,6 +1,7 @@
 package org.discordbot;
 
 import commands.CommandManager;
+import database.DatabaseConnection;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -43,13 +44,10 @@ public class Main {
             System.exit(1);
         }
 
-        // Initially ran into an issue where I wanted to pass the bot object to other classes like Commands.java to
-        // help with modularization.
-        // Unfortunately, I was having issues doing it, so I came up with this idea.
-            // 1. First, we initialize the Command class empty constructor.
-            // 2. I use a setter method after the bot is initialized to pass it to the Command class.
-        // STEPS: Command class initialized - > bot built - > setter method passes bot to Command class
+        // Load Database and create tables
+        DatabaseConnection.loadDatabaseProperties();
 
+        // Initialize commandManager class
         CommandManager manager = new CommandManager();
 
         // Build JDA instance after valid token is processed.

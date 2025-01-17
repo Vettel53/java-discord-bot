@@ -1,9 +1,12 @@
 package commands;
 
+import database.CommandUsageDAO;
+import database.DatabaseConnection;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
 import java.awt.*;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 
@@ -32,6 +35,14 @@ public class AvatarCommand {
                 }
          });
          */
+
+        // Increment the usage count for the avatar command in the database
+        try {
+            CommandUsageDAO dao = new CommandUsageDAO(DatabaseConnection.getConnection());
+            dao.incrementCommandUsage("avatar");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         //CompletableFuture.runAsync(() -> {
             String avatarURL = event.getUser().getAvatarUrl();
