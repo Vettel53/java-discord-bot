@@ -39,3 +39,4 @@ build/
 src/main/java/config/discordToken.txt
 src/main/java/config/fortniteToken.txt
 
+src/main/java/database/db.properties
