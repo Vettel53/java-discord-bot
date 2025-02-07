@@ -1,5 +1,6 @@
 package commands.animals;
 
+import database.CommandUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
@@ -22,7 +23,8 @@ public class FoxCommand {
      * @param event the discord event. Contains all information relating to discord.
      */
     public static void handleFoxCommand(SlashCommandInteraction event) {
-
+        // Increment the usage count for the fox command in the database
+        CommandUtils.incrementCommandUsage("fox");
 
         RandomFoxAPI.fetchRandomFox().thenAccept(randomFoxURL -> {
             if (randomFoxURL == null) {

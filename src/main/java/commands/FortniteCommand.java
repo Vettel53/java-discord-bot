@@ -1,5 +1,6 @@
 package commands;
 
+import database.CommandUtils;
 import models.PlayerStats;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -37,6 +38,9 @@ public class FortniteCommand {
     
         switch (subCommandUsed) {
             case "stats":
+                // Increment the usage count for the "fornite-stats" command in the database
+                CommandUtils.incrementCommandUsage("fortnite-stats");
+
                 // Validate the options
                 OptionMapping userNameOption = event.getOption("name");
                 if (userNameOption == null) {
@@ -52,9 +56,13 @@ public class FortniteCommand {
                 String platformType = getOptionMappingAsString(event, "accountplatform", "epic");
                 String timeWindow = getOptionMappingAsString(event, "timewindow", "lifetime");
                 String imageOption = getOptionMappingAsString(event, "image", "none");
+
                 handleStatsSubcommand(event, userName, playlist, platformType, timeWindow, imageOption);
                 break;
             case "compare":
+                // Increment the usage count for the "fornite-compare" command in the database
+                CommandUtils.incrementCommandUsage("fortnite-compare");
+
                 handleCompareSubCommand(event);
                 break;
             default:

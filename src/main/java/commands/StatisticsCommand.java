@@ -1,5 +1,6 @@
 package commands;
 
+import database.CommandUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
@@ -9,7 +10,7 @@ import java.time.Instant;
 import static config.BotConstants.BOT_IMAGE_URL;
 import static config.BotConstants.BOT_URL;
 
-public class InformationCommand {
+public class StatisticsCommand {
     private static final long BYTES_TO_MB = 1024 * 1024; // Used to calculate the bytes to megabytes
     private final long maxMemory;
     private final long allocatedMemory;
@@ -18,13 +19,13 @@ public class InformationCommand {
     private final int availableProcessors;
 
     /**
-     * Constructs an <b>InformationCommand object</b>, initializing system statistics
+     * Constructs an <b>StatisticsCommand object</b>, initializing system statistics
      * such as memory usage, active thread count, and available processors.
      * This constructor captures the current state of the system resources
      * to be used in generating information responses. Uses instance variables
      * to avoid "race conditions" and shared variables
      */
-    public InformationCommand() {
+    public StatisticsCommand() {
         this.maxMemory = Runtime.getRuntime().maxMemory();
         this.allocatedMemory = Runtime.getRuntime().totalMemory();
         this.freeMemory = Runtime.getRuntime().freeMemory();
@@ -33,16 +34,18 @@ public class InformationCommand {
     }
 
     /**
-     * Handles the information command by generating and sending an embedded message
+     * Handles the statistics command by generating and sending an embedded message
      * containing system statistics and bot information to the Discord channel.
      *
      * @param event the SlashCommandInteraction event that triggered this command,
      *              providing context and methods to reply to the interaction.
      */
-    public void handleInformationCommand(SlashCommandInteraction event) {
+    public void handleStatisticCommand(SlashCommandInteraction event) {
+        // Increment the usage count for the information command in the database
+        CommandUtils.incrementCommandUsage("information");
 
         try {
-            String response = formatInformationResponse();
+            String response = generateStatisticResponse();
 
             EmbedBuilder embed = new EmbedBuilder();
 
@@ -68,7 +71,7 @@ public class InformationCommand {
      *
      * @return A formatted <b>String</b> with system statistics and environment details.
      */
-    public String formatInformationResponse() {
+    public String generateStatisticResponse() {
 
         String formattedResponse = "**OS Name: **" + System.getProperty("os.name") + "\n\n"
                 + "**OS Version: **" + System.getProperty("os.version") + "\n"
@@ -76,8 +79,15 @@ public class InformationCommand {
                 + "**Max Memory: **" + maxMemory / BYTES_TO_MB + " MB" + "\n"
                 + "**Allocated Memory: **" + allocatedMemory / BYTES_TO_MB + " MB" + "\n"
                 + "**Free Memory: **" + freeMemory / BYTES_TO_MB + " MB" + "\n"
-                + "**Thread Count: **" + activeThreads + "\n"
-                + "**Processor Count: **" + availableProcessors + "\n";
+                + "**Thread Count: **" + activeThreads + "\n\n"
+                + "**Dog Command Usages: **" + CommandUtils.fetchCommandUsageCount("dog") + "\n"
+                + "**Cat Command Usages: **" + CommandUtils.fetchCommandUsageCount("cat") + "\n"
+                + "**Fox Command Usages: **" + CommandUtils.fetchCommandUsageCount("fox") + "\n"
+                + "**Duck Command Usages: **" + CommandUtils.fetchCommandUsageCount("duck") + "\n"
+                + "**Information Command Usages: **" + CommandUtils.fetchCommandUsageCount("information") + "\n"
+                + "**Avatar Command Usages: **" + CommandUtils.fetchCommandUsageCount("avatar") + "\n"
+                + "**Fornite-compare Command Usages: **" + CommandUtils.fetchCommandUsageCount("fortnite-compare") + "\n"
+                + "**Fortnite-stats Command Usages: **" + CommandUtils.fetchCommandUsageCount("fortnite-stats") + "\n";
 
         return formattedResponse;
     }

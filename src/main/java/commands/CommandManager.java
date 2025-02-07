@@ -102,8 +102,8 @@ public class CommandManager extends ListenerAdapter {
                     CatCommand.handleCatCommand(event);
                     break;
                 case "statistics":
-                    InformationCommand infoCommand = new InformationCommand();
-                    infoCommand.handleInformationCommand(event);
+                    StatisticsCommand infoCommand = new StatisticsCommand();
+                    infoCommand.handleStatisticCommand(event);
                     break;
                 case "avatar":
                     AvatarCommand.handleAvatarCommand(event);

@@ -2,6 +2,7 @@ package commands.animals;
 
 import api.RandomDogAPI;
 import api.RandomDuckAPI;
+import database.CommandUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
@@ -24,6 +25,8 @@ public class DuckCommand {
      * @param event the discord event. Contains all information relating to discord.
      */
     public static void handleDuckCommand(SlashCommandInteraction event) {
+        // Increment the usage count for the duck command in the database
+        CommandUtils.incrementCommandUsage("duck");
 
         RandomDuckAPI.fetchRandomDuck().thenAccept(randomDuckURL -> {
             if (randomDuckURL == null) {

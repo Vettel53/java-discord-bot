@@ -1,6 +1,7 @@
 package commands.animals;
 
 import api.RandomCatAPI;
+import database.CommandUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
@@ -23,6 +24,10 @@ public class CatCommand {
      * @param event the discord event. Contains all information relating to discord.
      */
     public static void handleCatCommand(SlashCommandInteraction event) {
+
+        // Increment the usage count for the cat command in the database
+        CommandUtils.incrementCommandUsage("cat");
+
         RandomCatAPI.fetchRandomCat().thenAccept(randomCatURL -> {
             if (randomCatURL == null) {
                 event.reply("Failed to fetch random cat image...").queue();
